@@ -34,10 +34,17 @@ public class Hospital {
     private String name;
 
 
-    public Hospital(String id, String address){
+    public Hospital(String id, String address,String category,String emergency_room,String name){
         this.id = id;
         this.address = address;
-//        this.id = id.replaceAll("\"","");
+
+        String[] splitted = this.address.split(" ");
+        this.district = String.format("%s %s",splitted[0], splitted[1]);
+
+        this.category = category;
+        this.emergency_room = Integer.parseInt(emergency_room);
+        this.name = name;
+
     }
 
 

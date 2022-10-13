@@ -12,9 +12,6 @@ public class Main {
         LineReader<Hospital> HospitalReader = new LineReader<>(new HospitalParser());
         String filename = "/Users/admin/Downloads/result.txt";
         List<Hospital> lines = HospitalReader.readAndParse(filename);
-//        for(Hospital h : lines){
-//            System.out.println(h.getId() + " " + h.getAddress() + ":" +h.getDistrict() + " " + h.getCategory() + " " + h.getEmergency_room() + " " + h.getName() + " "+ h.getSubdivision() );
-//        }
         SqlCreater sqlCreater = new SqlCreater();
 //        String sql = sqlCreater.sqlCreate(lines);
 //        System.out.println(sql);

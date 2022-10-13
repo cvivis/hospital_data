@@ -23,13 +23,13 @@ public class SqlCreater {
         return query;
     }
 
-    public void filesave(String filename, String body) {
+    public void filesave(String filename, String str) {
         File file = new File(filename);
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-            writer.write(body);
-            writer.close();
+            writer.write(str);
             System.out.println("파일 저장 완료!");
+            writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

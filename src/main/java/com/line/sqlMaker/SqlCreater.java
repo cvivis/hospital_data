@@ -28,7 +28,7 @@ public class SqlCreater {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(str);
-            System.out.println("파일 저장 완료!");
+            System.out.println("파일저장 완료!");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();

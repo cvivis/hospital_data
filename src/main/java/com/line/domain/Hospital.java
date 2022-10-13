@@ -5,8 +5,24 @@ public class Hospital {
 
 
     private String id;
+    private String subdivision;
+
+    public String getSubdivision() {
+        String[] subdivisionList = {"내과", "소아", "피부", "성형", "정형외과", "척추", "교정", "산부인과", "관절", "봉합", "화상", "골절", "영유아", "안과", "가정의학과", "비뇨기과", "치과","외과"};
+        for(String subd:subdivisionList){
+            if(this.name.contains(subd)){
+                return subd;
+            }
+        }
+        return "없음";
+
+
+    }
 
     public String getAddress() {
+        if(address.contains("'")){
+            address = address.replace("'","''");
+        }
         return address;
     }
 

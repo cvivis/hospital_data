@@ -36,7 +36,7 @@ public class hospitalDao {
     }
 
     public void selectId(String hospital_id,Connection conn) throws SQLException {
-        PreparedStatement ps2 = conn.prepareStatement("select * from users where id = ?");
+        PreparedStatement ps2 = conn.prepareStatement("select * from seoul_hospitals where hospital_id = ?");
         ps2.setString(1,hospital_id);
         ResultSet result = ps2.executeQuery();
 

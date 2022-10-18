@@ -17,9 +17,12 @@ class hospitalDaoTest {
     @Test
     void insertAndSelectId() throws SQLException {
 
-        AWSUserDaolmpl hospital = new AWSUserDaolmpl();
+//        AWSUserDaolmpl hospital = new AWSUserDaolmpl();
+        hospitalDao hospitalDao = new hospitalDao();
 
-        Hospital selectHospital = hospital.selectId("A1106309");
+//        Hospital selectHospital = hospital.selectId("A1106309");
+
+        Hospital selectHospital = hospitalDao.selectId("A1106309");
         Assertions.assertEquals("A1106309",selectHospital.getId());
 
     }

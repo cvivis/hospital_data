@@ -1,5 +1,6 @@
 package com.line.dao;
 
+import com.line.connectionMaker.Dbconnect;
 import com.line.domain.Hospital;
 
 import java.sql.*;
@@ -8,10 +9,11 @@ import java.util.Map;
 
 public class hospitalDao {
 
-
+    Dbconnect dbconnect = new Dbconnect();
 
     public void insert(List<Hospital> hospitals) throws SQLException {
-        Connection c = getConnection();
+
+        Connection c = dbconnect.getConnection();;
 
         PreparedStatement ps = null;
         for (Hospital hospital : hospitals) {
@@ -34,25 +36,26 @@ public class hospitalDao {
         c.close();
     }
 
-    public Hospital selectId(String hospital_id,Connection conn) throws SQLException {
+    public Hospital selectId(String hospital_id) throws SQLException {
+        Connection conn = dbconnect.getConnection();;
         PreparedStatement ps2 = conn.prepareStatement("select * from seoul_hospitals where hospital_id = ?");
         ps2.setString(1,hospital_id);
         ResultSet result = ps2.executeQuery();
-
+        Hospital hospital = null;
         while(result.next()){
-//            System.out.println("hospital id: "+result.getString("hospital_id"));
-//            System.out.println("name: "+result.getString("name"));
-//            System.out.println("password: "+result.getString("address"));
+
+            hospital = new Hospital(result.getString("hospital_id"),result.getString("address"),result.getString("category"),result.getString("emergency_room"),result.getString("name"));
+
         }
 
-        Hospital hospital = new Hospital(result.getString("hospital_id"),result.getString("address"),result.getString("district"),result.getString("name"),result.getString("subdivision"));
         result.close();
         ps2.close();
 
         return hospital;
 
     }
-    public Hospital selectAddress(String district,Connection conn) throws SQLException {
+    public Hospital selectAddress(String district) throws SQLException {
+        Connection conn = dbconnect.getConnection();
         PreparedStatement ps = conn.prepareStatement("select * from seoul_hospitals where district = ?");
         ps.setString(1,district);
         ResultSet result = ps.executeQuery();

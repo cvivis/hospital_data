@@ -1,5 +1,7 @@
 package com.line.dao;
 
+import com.line.connectionMaker.AwsConnectionMaker;
+import com.line.connectionMaker.ConnectionMaker;
 import com.line.connectionMaker.Dbconnect;
 import com.line.domain.Hospital;
 
@@ -9,11 +11,16 @@ import java.util.Map;
 
 public class hospitalDao {
 
-    Dbconnect dbconnect = new Dbconnect();
+    private ConnectionMaker connectionMaker;
+
+    public hospitalDao(){
+        this.connectionMaker = new AwsConnectionMaker() {
+        };
+    }
 
     public void insert(List<Hospital> hospitals) throws SQLException {
 
-        Connection c = dbconnect.getConnection();;
+        Connection c = connectionMaker.makeConnection();;
 
         PreparedStatement ps = null;
         for (Hospital hospital : hospitals) {
@@ -37,7 +44,7 @@ public class hospitalDao {
     }
 
     public Hospital selectId(String hospital_id) throws SQLException {
-        Connection conn = dbconnect.getConnection();;
+        Connection conn = connectionMaker.makeConnection();;
         PreparedStatement ps2 = conn.prepareStatement("select * from seoul_hospitals where hospital_id = ?");
         ps2.setString(1,hospital_id);
         ResultSet result = ps2.executeQuery();
@@ -55,7 +62,7 @@ public class hospitalDao {
 
     }
     public Hospital selectAddress(String district) throws SQLException {
-        Connection conn = dbconnect.getConnection();
+        Connection conn = connectionMaker.makeConnection();
         PreparedStatement ps = conn.prepareStatement("select * from seoul_hospitals where district = ?");
         ps.setString(1,district);
         ResultSet result = ps.executeQuery();

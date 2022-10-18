@@ -18,14 +18,15 @@ public class Main {
 //        Dbconnect db = new Dbconnect();
 //        Connection conn = db.add();
 //        Connection c = db.add();
-//        hospitalDao hD = new hospitalDao();
-        AWSUserDaolmpl hD = new AWSUserDaolmpl();
+        hospitalDao hD = new hospitalDao();
+//        AWSUserDaolmpl hD = new AWSUserDaolmpl();
 
         LineReader<Hospital> HospitalReader = new LineReader<>(new HospitalParser());
         String filename = "/Users/admin/Downloads/result2.txt";
         List<Hospital> lines = HospitalReader.readAndParse(filename);
 //        hD.insert(lines,conn);
-        hD.selectId("A1106309");
+        Hospital hospital = hD.selectId("A1106309");
+        System.out.println(hospital.getId());
 //        hD.selectAddress("서울특별시 강남구",c);
 
 //        SqlCreater sqlCreater = new SqlCreater();

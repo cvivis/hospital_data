@@ -1,11 +1,14 @@
-package com.line.connectionMaker;
+package com.line.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Map;
-import com.line.dao.hospitalDao;
 
-public class Dbconnect {
-    public Connection getConnection() throws SQLException {
+public class AWSUserDaolmpl extends HopitalDaoAbstract{
+
+    @Override
+    public Connection makeConnection() throws SQLException {
         Map<String,String> env = System.getenv();
         String dbHost = env.get("DB_HOST");
         String dbUser = env.get("DB_USER");
@@ -14,6 +17,5 @@ public class Dbconnect {
         Connection conn = DriverManager.getConnection(dbHost,dbUser,dbPassword);
 
         return conn;
-
     }
 }

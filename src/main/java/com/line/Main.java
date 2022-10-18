@@ -22,6 +22,9 @@ public class Main {
         List<Hospital> lines = HospitalReader.readAndParse(filename);
 //        hD.insert(lines,conn);
         hD.selectId("A1106309",conn);
+        hD.selectAddress("서울특별시 강남구",conn);
+
+        conn.close();
 //        SqlCreater sqlCreater = new SqlCreater();
 //        String sql = sqlCreater.sqlCreate(lines);
 //        System.out.println(sql);

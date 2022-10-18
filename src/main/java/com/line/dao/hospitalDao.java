@@ -45,8 +45,23 @@ public class hospitalDao {
             System.out.println("name: "+result.getString("name"));
             System.out.println("password: "+result.getString("address"));
         }
+        result.close();
         ps2.close();
-        conn.close();
+    }
+    public void selectAddress(String district,Connection conn) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("select * from seoul_hospitals where district = ?");
+        ps.setString(1,district);
+        ResultSet result = ps.executeQuery();
+
+        while(result.next()){
+            System.out.println("hospital id: "+result.getString("hospital_id"));
+            System.out.println("name: "+result.getString("name"));
+            System.out.println("district: "+result.getString("district"));
+            System.out.println("--------------------------");
+        }
+        result.close();
+        ps.close();
+
     }
 
 }

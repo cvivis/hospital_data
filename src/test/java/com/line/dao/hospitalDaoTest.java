@@ -1,5 +1,6 @@
 package com.line.dao;
 
+import com.line.connectionMaker.AwsConnectionMaker;
 import com.line.connectionMaker.Dbconnect;
 import com.line.domain.Hospital;
 import org.junit.jupiter.api.Assertions;
@@ -18,11 +19,11 @@ class hospitalDaoTest {
     void insertAndSelectId() throws SQLException {
 
 //        AWSUserDaolmpl hospital = new AWSUserDaolmpl();
-        hospitalDao hospitalDao = new hospitalDao();
+        hospitalDao hD = new Daofactory().hosDao();
 
 //        Hospital selectHospital = hospital.selectId("A1106309");
 
-        Hospital selectHospital = hospitalDao.selectId("A1106309");
+        Hospital selectHospital = hD.selectId("A1106309");
         Assertions.assertEquals("A1106309",selectHospital.getId());
 
     }

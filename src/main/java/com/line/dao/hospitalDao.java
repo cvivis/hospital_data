@@ -13,9 +13,8 @@ public class hospitalDao {
 
     private ConnectionMaker connectionMaker;
 
-    public hospitalDao(){
-        this.connectionMaker = new AwsConnectionMaker() {
-        };
+    public hospitalDao(ConnectionMaker connectionMaker){
+        this.connectionMaker = connectionMaker;
     }
 
     public void insert(List<Hospital> hospitals) throws SQLException {

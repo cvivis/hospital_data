@@ -19,12 +19,17 @@ class hospitalDaoTest {
     void insertAndSelectId() throws SQLException {
 
 //        AWSUserDaolmpl hospital = new AWSUserDaolmpl();
-        hospitalDao hD = new Daofactory().hosDao();
+        hospitalDao hD = new Daofactory().hosDaoAws();
 
-//        Hospital selectHospital = hospital.selectId("A1106309");
+        Hospital hospital = new Hospital("A1101720","서울특별시 강남구 선릉로 669","C","2","강남영상의학과의원");
+        hD.insert(hospital);
 
-        Hospital selectHospital = hD.selectId("A1106309");
-        Assertions.assertEquals("A1106309",selectHospital.getId());
+        Hospital selectHospital = hD.selectId("A1101720");
+        Assertions.assertEquals("A1101720",selectHospital.getId());
+
+        Assertions.assertEquals(1,hD.deleteAll());
+
+        Assertions.assertEquals(0,hD.getCount());
 
     }
 }

@@ -17,12 +17,12 @@ public class hospitalDao {
         this.connectionMaker = connectionMaker;
     }
 
-    public void insert(List<Hospital> hospitals) throws SQLException {
+    public void insert(Hospital hospital) throws SQLException {
 
         Connection c = connectionMaker.makeConnection();;
 
         PreparedStatement ps = null;
-        for (Hospital hospital : hospitals) {
+//        for (Hospital hospital : hospitals) {
             ps = c.prepareStatement("INSERT INTO seoul_hospitals(hospital_id,address, district,category,emergency_room,name,subdivision) VALUES (?,?,?,?,?,?,?)");
             ps.setString(1, hospital.getId());
             ps.setString(2, hospital.getAddress());
@@ -32,7 +32,7 @@ public class hospitalDao {
             ps.setString(6, hospital.getName());
             ps.setString(7, hospital.getSubdivision());
             ps.executeUpdate();
-        }
+//        }
 
 
 
@@ -48,12 +48,10 @@ public class hospitalDao {
         ps2.setString(1,hospital_id);
         ResultSet result = ps2.executeQuery();
         Hospital hospital = null;
+
         while(result.next()){
-
             hospital = new Hospital(result.getString("hospital_id"),result.getString("address"),result.getString("category"),result.getString("emergency_room"),result.getString("name"));
-
         }
-
         result.close();
         ps2.close();
 
@@ -65,31 +63,36 @@ public class hospitalDao {
         PreparedStatement ps = conn.prepareStatement("select * from seoul_hospitals where district = ?");
         ps.setString(1,district);
         ResultSet result = ps.executeQuery();
-
+        Hospital hospital = null;
         while(result.next()){
 //            System.out.println("hospital id: "+result.getString("hospital_id"));
 //            System.out.println("name: "+result.getString("name"));
 //            System.out.println("district: "+result.getString("district"));
 //            System.out.println("--------------------------");
+            hospital = new Hospital(result.getString("hospital_id"),result.getString("address"),result.getString("category"),result.getString("emergency_room"),result.getString("name"));
         }
-        Hospital hospital = new Hospital(result.getString("hospital_id"),result.getString("address"),result.getString("district"),result.getString("name"),result.getString("subdivision"));
         result.close();
 
         ps.close();
         return hospital;
 
     }
+    public int deleteAll() throws SQLException {
+        Connection conn = connectionMaker.makeConnection();
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM seoul_hospitals");
+        int result = ps.executeUpdate();
+        return result;
+    }
 
-    public Connection getConnection() throws SQLException {
-        Map<String,String> env = System.getenv();
-        String dbHost = env.get("DB_HOST");
-        String dbUser = env.get("DB_USER");
-        String dbPassword = env.get("DB_PASSWORD");
-
-        Connection conn = DriverManager.getConnection(dbHost,dbUser,dbPassword);
-
-        return conn;
-
+    public int getCount() throws  SQLException{
+        Connection conn = connectionMaker.makeConnection();
+        PreparedStatement ps = conn.prepareStatement("select count(*) from seoul_hospitals");
+        ResultSet result = ps.executeQuery();
+        int count = 0;
+        while(result.next()){
+            count = Integer.parseInt(result.getString("count(*)"));
+        }
+        return count;
     }
 
 }

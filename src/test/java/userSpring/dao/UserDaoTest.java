@@ -23,12 +23,11 @@ class UserDaoTest {
     @DisplayName("데이터 추가 및 읽기 테스트")
     void addAndGet() throws SQLException, ClassNotFoundException {
         UserDao userdao = context.getBean(Daofactory.class).awsUserDao();
-        String id = "7";
-        User user1 = new User(id, "홍홍홍", "1234");
+        User user1 = new User("1", "홍홍홍", "1234");
 
         userdao.insert(user1);
 
-        User user2 = userdao.selectId(id);
+        User user2 = userdao.selectId(user1.getId());
         assertEquals(user1.getId(), user2.getId());
         assertEquals(user1.getName(), user2.getName());
         assertEquals(user1.getPassword(), user2.getPassword());

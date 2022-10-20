@@ -66,21 +66,66 @@ public class UserDao {
 
     }
     public int deleteAll() throws SQLException {
-        Connection conn = connectionMaker.makeConnection();
-        PreparedStatement ps = conn.prepareStatement("DELETE FROM users");
-        int result = ps.executeUpdate();
-        return result;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try {
+            conn = connectionMaker.makeConnection();
+            ps = conn.prepareStatement("DELETE FROM users");
+            int result = ps.executeUpdate();
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            if(ps != null){
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+//                    throw new RuntimeException(e);
+                }
+            }
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+//                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+
     }
 
     public int getCount() throws  SQLException{
-        Connection conn = connectionMaker.makeConnection();
-        PreparedStatement ps = conn.prepareStatement("select count(*) from users");
-        ResultSet result = ps.executeQuery();
-        int count = 0;
-        while(result.next()){
-            count = Integer.parseInt(result.getString("count(*)"));
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            conn = connectionMaker.makeConnection();
+            ps = conn.prepareStatement("select count(*) from users");
+            ResultSet result = ps.executeQuery();
+            int count = 0;
+            if(result.next()){
+                count = Integer.parseInt(result.getString("count(*)"));
+            }
+            return count;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            if(ps != null){
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+//                    throw new RuntimeException(e);
+                }
+            }
+            if(conn != null){
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+//                    throw new RuntimeException(e);
+                }
+            }
         }
-        return count;
     }
 
 

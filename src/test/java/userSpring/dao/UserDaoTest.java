@@ -32,5 +32,8 @@ class UserDaoTest {
         assertEquals(user1.getId(), user2.getId());
         assertEquals(user1.getName(), user2.getName());
         assertEquals(user1.getPassword(), user2.getPassword());
+
+        assertEquals(1,userdao.getCount());
+        assertEquals(1,userdao.deleteAll());
     }
 }

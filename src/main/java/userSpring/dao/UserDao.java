@@ -77,14 +77,14 @@ public class UserDao {
 //    }
     public int deleteAll() throws SQLException {
         Connection conn = connectionMaker.makeConnection();
-        PreparedStatement ps = conn.prepareStatement("DELETE FROM User");
+        PreparedStatement ps = conn.prepareStatement("DELETE FROM users");
         int result = ps.executeUpdate();
         return result;
     }
 
     public int getCount() throws  SQLException{
         Connection conn = connectionMaker.makeConnection();
-        PreparedStatement ps = conn.prepareStatement("select count(*) from User");
+        PreparedStatement ps = conn.prepareStatement("select count(*) from users");
         ResultSet result = ps.executeQuery();
         int count = 0;
         while(result.next()){

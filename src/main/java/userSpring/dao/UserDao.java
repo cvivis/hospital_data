@@ -24,16 +24,12 @@ public class UserDao {
         Connection c = connectionMaker.makeConnection();;
 
         PreparedStatement ps = null;
-//        for (UserDao hospital : hospitals) {
-            ps = c.prepareStatement("INSERT INTO users(id, name,password) VALUES (?,?,?)");
+            ps = new InsertStrategy().makePreparedStatement(c);
             ps.setString(1, user.getId());
             ps.setString(2, user.getName());
             ps.setString(3, user.getPassword());
 
             ps.executeUpdate();
-//        }
-
-
 
         ps.close();
 

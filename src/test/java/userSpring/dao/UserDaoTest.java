@@ -35,13 +35,16 @@ class UserDaoTest {
     void addAndGet() throws SQLException, ClassNotFoundException {
 
         User user1 = new User("1", "홍홍홍", "1234");
+        User user2 = new User("2", "힝힝힝", "1234");
+        User user3 = new User("3", "헹헹헹", "1234");
+
 
         userdao.insert(user1);
 
-        User user2 = userdao.selectId(user1.getId());
-        assertEquals(user1.getId(), user2.getId());
-        assertEquals(user1.getName(), user2.getName());
-        assertEquals(user1.getPassword(), user2.getPassword());
+        User user = userdao.selectId(user1.getId());
+        assertEquals(user1.getId(), user.getId());
+        assertEquals(user1.getName(), user.getName());
+        assertEquals(user1.getPassword(), user.getPassword());
 
         assertEquals(1,userdao.getCount());
         assertEquals(1,userdao.deleteAll());
@@ -49,7 +52,7 @@ class UserDaoTest {
     @Test
     void findById(){
         assertThrows(EmptyResultDataAccessException.class,()->{
-            userdao.selectId("30");
+            userdao.selectId("20");
         });
     }
 }

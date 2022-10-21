@@ -70,7 +70,7 @@ public class UserDao {
         PreparedStatement ps = null;
         try {
             conn = connectionMaker.makeConnection();
-            ps = conn.prepareStatement("DELETE FROM users");
+            ps = new DeleteAllStrategy().makePreparedStatement(conn);
             int result = ps.executeUpdate();
             return result;
         } catch (SQLException e) {
@@ -80,14 +80,12 @@ public class UserDao {
                 try {
                     ps.close();
                 } catch (SQLException e) {
-//                    throw new RuntimeException(e);
                 }
             }
             if(conn != null){
                 try {
                     conn.close();
                 } catch (SQLException e) {
-//                    throw new RuntimeException(e);
                 }
             }
         }
@@ -115,14 +113,12 @@ public class UserDao {
                 try {
                     ps.close();
                 } catch (SQLException e) {
-//                    throw new RuntimeException(e);
                 }
             }
             if(conn != null){
                 try {
                     conn.close();
                 } catch (SQLException e) {
-//                    throw new RuntimeException(e);
                 }
             }
         }

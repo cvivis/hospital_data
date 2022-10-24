@@ -2,6 +2,7 @@ package userSpring.dao;
 
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import userSpring.model.User;
 
@@ -19,10 +20,12 @@ public class UserDao {
 //        this.dataSource = dataSource;
 //    }
     private final DataSource dataSource;
-    private final JdbcContext jdbcContext;
+//    private final JdbcContext jdbcContext;
+    private JdbcTemplate jdbcTemplate;
     public UserDao(DataSource dataSource){
         this.dataSource = dataSource;
-        this.jdbcContext = new JdbcContext(dataSource);
+//        this.jdbcContext = new JdbcContext(dataSource);
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
 
@@ -55,16 +58,17 @@ public class UserDao {
     public void insert(User user) throws SQLException {
 //        jdbcContextWithStatementStrategy(new InsertStrategy(user));
 //        System.out.println("insert 완료");
-        jdbcContext.jdbcContextWithStatementStrategy(new StatementStrategy() {
-            @Override
-            public PreparedStatement makePreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps =  connection.prepareStatement("INSERT INTO users(id, name,password) VALUES (?,?,?)");
-                ps.setString(1, user.getId());
-                ps.setString(2, user.getName());
-                ps.setString(3, user.getPassword());
-                return ps;
-            }
-        });
+//        jdbcContext.jdbcContextWithStatementStrategy(new StatementStrategy() {
+//            @Override
+//            public PreparedStatement makePreparedStatement(Connection connection) throws SQLException {
+//                PreparedStatement ps =  connection.prepareStatement("INSERT INTO users(id, name,password) VALUES (?,?,?)");
+//                ps.setString(1, user.getId());
+//                ps.setString(2, user.getName());
+//                ps.setString(3, user.getPassword());
+//                return ps;
+//            }
+//        });
+            this.jdbcTemplate.update("INSERT INTO users(id, name,password) VALUES (?,?,?)",user.getId(),user.getName(),user.getPassword());
     }
 
     public User selectId(String id) throws SQLException {
@@ -107,7 +111,8 @@ public class UserDao {
 //        int result = jdbcContextWithStatementStrategy(new DeleteAllStrategy());
 //        return result;
         String sql = "DELETE FROM users";
-        this.jdbcContext.executeSql(sql);
+//        this.jdbcContext.executeSql(sql);
+        this.jdbcTemplate.update(sql);
     }
 
     public int getCount() throws SQLException {

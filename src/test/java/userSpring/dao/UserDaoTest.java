@@ -48,6 +48,7 @@ class UserDaoTest {
 
         assertEquals(1,userdao.getCount());
         userdao.deleteAll();
+        assertEquals(0,userdao.getCount());
 //        assertEquals();
     }
     @Test

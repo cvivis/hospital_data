@@ -2,6 +2,7 @@ package userSpring.dao;
 
 
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.jdbc.Sql;
 import userSpring.model.User;
 
 import javax.sql.DataSource;
@@ -92,17 +93,21 @@ public class UserDao {
 
     }
 
+//    public void executeSql(String sql) throws SQLException{
+//        this.jdbcContext.jdbcContextWithStatementStrategy(new StatementStrategy() {
+//            @Override
+//            public PreparedStatement makePreparedStatement(Connection connection) throws SQLException {
+//                return connection.prepareStatement(sql);
+//            }
+//        });
+//    }
     public void deleteAll() throws SQLException {
 //        Connection conn = null;
 //        PreparedStatement ps = null;
 //        int result = jdbcContextWithStatementStrategy(new DeleteAllStrategy());
 //        return result;
-        jdbcContext.jdbcContextWithStatementStrategy(new StatementStrategy() {
-            @Override
-            public PreparedStatement makePreparedStatement(Connection connection) throws SQLException {
-                return connection.prepareStatement("DELETE FROM users");
-            }
-        });
+        String sql = "DELETE FROM users";
+        this.jdbcContext.executeSql(sql);
     }
 
     public int getCount() throws SQLException {

@@ -14,6 +14,15 @@ public class JdbcContext {
         this.dataSource = dataSource;
     }
 
+    public void executeSql(String sql) throws SQLException{
+        jdbcContextWithStatementStrategy(new StatementStrategy() {
+            @Override
+            public PreparedStatement makePreparedStatement(Connection connection) throws SQLException {
+                return connection.prepareStatement(sql);
+            }
+        });
+    }
+
     public int jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException {
         Connection conn = null;
         PreparedStatement ps = null;

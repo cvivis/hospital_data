@@ -4,6 +4,7 @@ package userSpring.dao;
 import org.springframework.dao.EmptyResultDataAccessException;
 import userSpring.model.User;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,10 +12,15 @@ import java.sql.SQLException;
 
 public class UserDao {
 
-    private ConnectionMaker connectionMaker;
+//    private ConnectionMaker dataSource;
+//
+//    public UserDao(ConnectionMaker dataSource) {
+//        this.dataSource = dataSource;
+//    }
+    private DataSource dataSource;
 
-    public UserDao(ConnectionMaker connectionMaker) {
-        this.connectionMaker = connectionMaker;
+    public UserDao(DataSource dataSource){
+        this.dataSource = dataSource;
     }
 
 
@@ -22,7 +28,7 @@ public class UserDao {
         Connection conn = null;
         PreparedStatement ps = null;
         try {
-            conn = connectionMaker.makeConnection();
+            conn = dataSource.getConnection();
             ps = stmt.makePreparedStatement(conn);
             int result = ps.executeUpdate();
             return result;
@@ -51,7 +57,7 @@ public class UserDao {
 
     public User selectId(String id) throws SQLException {
         try {
-            Connection conn = connectionMaker.makeConnection();
+            Connection conn = dataSource.getConnection();
             ;
             PreparedStatement ps2 = conn.prepareStatement("select * from users where id = ?");
             ps2.setString(1, id);
@@ -87,7 +93,7 @@ public class UserDao {
         PreparedStatement ps = null;
 
         try {
-            conn = connectionMaker.makeConnection();
+            conn = dataSource.getConnection();
             ps = conn.prepareStatement("select count(*) from users");
             ResultSet result = ps.executeQuery();
             int count = 0;

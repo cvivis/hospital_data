@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserDao {
 
@@ -55,6 +56,18 @@ public class UserDao {
 //            }
 //        }
 //    }
+    public List<User> getAll() throws SQLException{
+        RowMapper<User> rowMapper = new RowMapper<User>() {
+            @Override
+            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                User user = new User(rs.getString("id"), rs.getString("name"),
+                        rs.getString("password"));
+                return user;
+            }
+        };
+
+        return this.jdbcTemplate.query("select * from users",rowMapper);
+    }
 
     public void insert(User user) throws SQLException {
 //        jdbcContextWithStatementStrategy(new InsertStrategy(user));

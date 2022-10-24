@@ -38,7 +38,7 @@ class UserDaoTest {
         User user2 = new User("2", "힝힝힝", "1234");
         User user3 = new User("3", "헹헹헹", "1234");
 
-
+        userdao.deleteAll();
         userdao.insert(user1);
 
         User user = userdao.selectId(user1.getId());

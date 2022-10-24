@@ -3,6 +3,7 @@ package userSpring.dao;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.jdbc.Sql;
 import userSpring.model.User;
 
@@ -72,28 +73,36 @@ public class UserDao {
     }
 
     public User selectId(String id) throws SQLException {
-        try {
-            Connection conn = dataSource.getConnection();
-            ;
-            PreparedStatement ps2 = conn.prepareStatement("select * from users where id = ?");
-            ps2.setString(1, id);
-            ResultSet result = ps2.executeQuery();
-            User user = null;
-
-            if (result.next()) {
-                user = new User(result.getString("id"), result.getString("name"), result.getString("password"));
+        RowMapper<User> rowMapper = new RowMapper<User>() {
+            @Override
+            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+                User user = new User(rs.getString("id"),rs.getString("name"),rs.getString("password"));
+                return user;
             }
-            result.close();
-            ps2.close();
-            if (user == null) {
-                throw new EmptyResultDataAccessException(1);
-            }
-
-
-            return user;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        };
+        return this.jdbcTemplate.queryForObject("select * from users where id = ?",rowMapper,id);
+//        try {
+//            Connection conn = dataSource.getConnection();
+//            ;
+//            PreparedStatement ps2 = conn.prepareStatement("select * from users where id = ?");
+//            ps2.setString(1, id);
+//            ResultSet result = ps2.executeQuery();
+//            User user = null;
+//
+//            if (result.next()) {
+//                user = new User(result.getString("id"), result.getString("name"), result.getString("password"));
+//            }
+//            result.close();
+//            ps2.close();
+//            if (user == null) {
+//                throw new EmptyResultDataAccessException(1);
+//            }
+//
+//
+//            return user;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
     }
 
@@ -116,34 +125,35 @@ public class UserDao {
     }
 
     public int getCount() throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
-
-        try {
-            conn = dataSource.getConnection();
-            ps = conn.prepareStatement("select count(*) from users");
-            ResultSet result = ps.executeQuery();
-            int count = 0;
-            if (result.next()) {
-                count = Integer.parseInt(result.getString("count(*)"));
-            }
-            return count;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
+//        Connection conn = null;
+//        PreparedStatement ps = null;
+//
+//        try {
+//            conn = dataSource.getConnection();
+//            ps = conn.prepareStatement("select count(*) from users");
+//            ResultSet result = ps.executeQuery();
+//            int count = 0;
+//            if (result.next()) {
+//                count = Integer.parseInt(result.getString("count(*)"));
+//            }
+//            return count;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            if (ps != null) {
+//                try {
+//                    ps.close();
+//                } catch (SQLException e) {
+//                }
+//            }
+//            if (conn != null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                }
+//            }
+//        }
+        return this.jdbcTemplate.queryForObject("select count(*) from users",Integer.class);
     }
 
 

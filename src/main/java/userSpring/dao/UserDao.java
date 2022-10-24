@@ -17,42 +17,53 @@ public class UserDao {
 //    public UserDao(ConnectionMaker dataSource) {
 //        this.dataSource = dataSource;
 //    }
-    private DataSource dataSource;
-
+    private final DataSource dataSource;
+    private final JdbcContext jdbcContext;
     public UserDao(DataSource dataSource){
         this.dataSource = dataSource;
+        this.jdbcContext = new JdbcContext(dataSource);
     }
 
 
-    public int jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        try {
-            conn = dataSource.getConnection();
-            ps = stmt.makePreparedStatement(conn);
-            int result = ps.executeUpdate();
-            return result;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException e) {
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-    }
+//    public int jdbcContextWithStatementStrategy(StatementStrategy stmt) throws SQLException {
+//        Connection conn = null;
+//        PreparedStatement ps = null;
+//        try {
+//            conn = dataSource.getConnection();
+//            ps = stmt.makePreparedStatement(conn);
+//            int result = ps.executeUpdate();
+//            return result;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            if (ps != null) {
+//                try {
+//                    ps.close();
+//                } catch (SQLException e) {
+//                }
+//            }
+//            if (conn != null) {
+//                try {
+//                    conn.close();
+//                } catch (SQLException e) {
+//                }
+//            }
+//        }
+//    }
 
     public void insert(User user) throws SQLException {
-        jdbcContextWithStatementStrategy(new InsertStrategy(user));
-        System.out.println("insert 완료");
+//        jdbcContextWithStatementStrategy(new InsertStrategy(user));
+//        System.out.println("insert 완료");
+        jdbcContext.jdbcContextWithStatementStrategy(new StatementStrategy() {
+            @Override
+            public PreparedStatement makePreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps =  connection.prepareStatement("INSERT INTO users(id, name,password) VALUES (?,?,?)");
+                ps.setString(1, user.getId());
+                ps.setString(2, user.getName());
+                ps.setString(3, user.getPassword());
+                return ps;
+            }
+        });
     }
 
     public User selectId(String id) throws SQLException {
@@ -81,11 +92,17 @@ public class UserDao {
 
     }
 
-    public int deleteAll() throws SQLException {
-        Connection conn = null;
-        PreparedStatement ps = null;
-        int result = jdbcContextWithStatementStrategy(new DeleteAllStrategy());
-        return result;
+    public void deleteAll() throws SQLException {
+//        Connection conn = null;
+//        PreparedStatement ps = null;
+//        int result = jdbcContextWithStatementStrategy(new DeleteAllStrategy());
+//        return result;
+        jdbcContext.jdbcContextWithStatementStrategy(new StatementStrategy() {
+            @Override
+            public PreparedStatement makePreparedStatement(Connection connection) throws SQLException {
+                return connection.prepareStatement("DELETE FROM users");
+            }
+        });
     }
 
     public int getCount() throws SQLException {

@@ -47,7 +47,8 @@ class UserDaoTest {
         assertEquals(user1.getPassword(), user.getPassword());
 
         assertEquals(1,userdao.getCount());
-        assertEquals(1,userdao.deleteAll());
+        userdao.deleteAll();
+//        assertEquals();
     }
     @Test
     void findById(){

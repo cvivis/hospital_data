@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DeleteAllStrategy implements StatementStrategy{
 
     @Override
-    public PreparedStatement makePreparedStatement(Connection conn) throws SQLException {
-        return conn.prepareStatement("DELETE FROM users");
+    public PreparedStatement makePreparedStatement(Connection c) throws SQLException {
+        return c.prepareStatement("DELETE FROM users");
     }
 }

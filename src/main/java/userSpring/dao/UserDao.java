@@ -45,11 +45,6 @@ public class UserDao {
     }
 
     public void insert(User user) throws SQLException {
-//
-//        Connection c = connectionMaker.makeConnection();;
-
-//        PreparedStatement ps = null;
-//            ps = new InsertStrategy().makePreparedStatement(c);
         jdbcContextWithStatementStrategy(new InsertStrategy(user));
         System.out.println("insert 완료");
     }
